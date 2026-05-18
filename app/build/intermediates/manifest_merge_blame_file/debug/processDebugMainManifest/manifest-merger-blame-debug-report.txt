@@ -1,0 +1,167 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.mg4.winclose"
+4    android:sharedUserId="android.uid.system"
+5    android:versionCode="1"
+6    android:versionName="1.0" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="28"
+10        android:targetSdkVersion="34" />
+11
+12    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+12-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:5:5-77
+12-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:5:22-74
+13    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+13-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:6:5-81
+13-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:6:22-78
+14    <uses-permission android:name="android.permission.WAKE_LOCK" />
+14-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:7:5-68
+14-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:7:22-65
+15    <uses-permission android:name="android.car.permission.CAR_VENDOR_EXTENSION" />
+15-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:8:5-83
+15-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:8:22-80
+16
+17    <permission
+17-->[androidx.core:core:1.12.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\b874c7b69d96e8339967f4239dfa39fa\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+18        android:name="com.mg4.winclose.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+18-->[androidx.core:core:1.12.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\b874c7b69d96e8339967f4239dfa39fa\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+19        android:protectionLevel="signature" />
+19-->[androidx.core:core:1.12.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\b874c7b69d96e8339967f4239dfa39fa\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+20
+21    <uses-permission android:name="com.mg4.winclose.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+21-->[androidx.core:core:1.12.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\b874c7b69d96e8339967f4239dfa39fa\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+21-->[androidx.core:core:1.12.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\b874c7b69d96e8339967f4239dfa39fa\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+22
+23    <application
+23-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:10:5-42:19
+24        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+24-->[androidx.core:core:1.12.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\b874c7b69d96e8339967f4239dfa39fa\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+25        android:debuggable="true"
+26        android:extractNativeLibs="false"
+27        android:icon="@drawable/ic_launcher"
+27-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:12:9-45
+28        android:label="WinClose"
+28-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:11:9-33
+29        android:supportsRtl="true"
+29-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:14:9-35
+30        android:theme="@style/Theme.WinClose" >
+30-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:13:9-46
+31        <activity
+31-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:16:9-25:20
+32            android:name="com.mg4.winclose.MainActivity"
+32-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:17:13-41
+33            android:exported="true"
+33-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:18:13-36
+34            android:screenOrientation="landscape"
+34-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:19:13-50
+35            android:windowSoftInputMode="adjustPan" >
+35-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:20:13-52
+36            <intent-filter>
+36-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:21:13-24:29
+37                <action android:name="android.intent.action.MAIN" />
+37-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:22:17-69
+37-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:22:25-66
+38
+39                <category android:name="android.intent.category.LAUNCHER" />
+39-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:23:17-77
+39-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:23:27-74
+40            </intent-filter>
+41        </activity>
+42
+43        <service
+43-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:27:9-30:46
+44            android:name="com.mg4.winclose.WindowService"
+44-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:28:13-42
+45            android:directBootAware="true"
+45-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:30:13-43
+46            android:exported="false" />
+46-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:29:13-37
+47
+48        <receiver
+48-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:32:9-40:20
+49            android:name="com.mg4.winclose.BootReceiver"
+49-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:33:13-41
+50            android:directBootAware="true"
+50-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:35:13-43
+51            android:exported="true" >
+51-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:34:13-36
+52            <intent-filter>
+52-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:36:13-39:29
+53                <action android:name="android.intent.action.BOOT_COMPLETED" />
+53-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:37:17-79
+53-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:37:25-76
+54                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+54-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:38:17-86
+54-->D:\Claude\winclose2\winclose2\app\src\main\AndroidManifest.xml:38:25-83
+55            </intent-filter>
+56        </receiver>
+57
+58        <provider
+58-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\7daba3a7725ce35b8b75673e94d7e1fd\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+59            android:name="androidx.startup.InitializationProvider"
+59-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\7daba3a7725ce35b8b75673e94d7e1fd\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+60            android:authorities="com.mg4.winclose.androidx-startup"
+60-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\7daba3a7725ce35b8b75673e94d7e1fd\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+61            android:exported="false" >
+61-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\7daba3a7725ce35b8b75673e94d7e1fd\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+62            <meta-data
+62-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\7daba3a7725ce35b8b75673e94d7e1fd\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+63                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+63-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\7daba3a7725ce35b8b75673e94d7e1fd\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+64                android:value="androidx.startup" />
+64-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\7daba3a7725ce35b8b75673e94d7e1fd\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+65            <meta-data
+65-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\5252f2288a0b476970e148d93fe786a0\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+66                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+66-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\5252f2288a0b476970e148d93fe786a0\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+67                android:value="androidx.startup" />
+67-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\5252f2288a0b476970e148d93fe786a0\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+68            <meta-data
+68-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+69                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+69-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+70                android:value="androidx.startup" />
+70-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+71        </provider>
+72
+73        <receiver
+73-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+74            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+74-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+75            android:directBootAware="false"
+75-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+76            android:enabled="true"
+76-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+77            android:exported="true"
+77-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+78            android:permission="android.permission.DUMP" >
+78-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+79            <intent-filter>
+79-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+80                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+80-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+80-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+81            </intent-filter>
+82            <intent-filter>
+82-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+83                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+83-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+83-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+84            </intent-filter>
+85            <intent-filter>
+85-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+86                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+86-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+86-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+87            </intent-filter>
+88            <intent-filter>
+88-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+89                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+89-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+89-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Bolza\.gradle\caches\9.0.0\transforms\d799867c6e7ca8715283ae285cd7ad03\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+90            </intent-filter>
+91        </receiver>
+92    </application>
+93
+94</manifest>

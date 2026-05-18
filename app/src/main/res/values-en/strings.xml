@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WinClose</string>
+    <string name="status_vsm_ready">VSM ✓</string>
+    <string name="status_vsm_waiting">VSM…</string>
+
+    <string name="section_auto_close">Auto-close</string>
+    <string name="switch_auto_label">Close windows automatically when leaving the vehicle</string>
+
+    <string name="section_manual">Manual close</string>
+    <string name="btn_close_pulsed">⬆ Close windows</string>
+
+    <string name="settings_language_label">Langue / Language</string>
+
+    <string name="btn_clear_log">Clear log</string>
+    <string name="log_waiting">Waiting…</string>
+
+    <string name="notif_active">WinClose active</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_lang_fr">🇫🇷 Français</string>
+    <string name="dialog_lang_en">🇬🇧 English</string>
+
+    <string name="info_text"><![CDATA[
+<b><font color="#E94560">WinClose</font></b> — automatic window closing for MG4.<br><br>
+<b>How it works:</b><br>
+• Monitors speed via the SAIC API<br>
+• When you exceed the <b>speed threshold</b> or drive longer than the <b>arming duration</b>, the system is <i>armed</i><br>
+• Upon arrival, when you shift to <b>P</b> and open the <b>driver door</b>:<br>
+&#8194;→ after the <b>closing delay</b>, all 4 windows close automatically<br><br>
+<b>Advanced settings (⚙):</b><br>
+• <b>Speed threshold</b>: speed beyond which the car is considered to have been driven. Prevents triggering after a startup without driving.<br>
+• <b>Arming duration</b>: minimum RUN duration after which the system auto-arms, even without reaching the speed threshold.<br>
+• <b>Closing delay</b>: time between driver door opening and the start of window closing. Gives you time to exit calmly.<br>
+• <b>Per-window mode</b>: choose for each of the 4 windows between:<br>
+&#8194;– <b>AUTO</b>: automatic close command (if the window supports it)<br>
+&#8194;– <b>PULSE</b>: holds the command for the configured duration (closes any window)<br>
+&#8194;– <b>OFF</b>: window is not actuated<br><br>
+<b>Settings:</b><br>
+• <b>Auto-close</b>: enables/disables the system<br>
+• 60 s cooldown between two closes<br>
+• Auto-rearm after each cycle in the same session<br><br>
+<b>Manual buttons:</b><br>
+• <b>Close (AUTO)</b>: auto-close command if the window supports it<br>
+• <b>Close (PULSED 5 s)</b>: holds the command for 5 s, closes even fully open windows<br>
+• <b>Clear log</b>: empties the console on the right<br><br>
+<b>Technical notes:</b><br>
+• Talks to <i>CarVehicleSettingClient</i> and <i>CarStateClient</i> from the SAIC launcher<br>
+• Foreground service that auto-restarts at boot
+    ]]></string>
+
+    <!-- Advanced settings -->
+    <string name="settings_title">Advanced settings</string>
+    <string name="settings_speed_label">Speed threshold</string>
+    <string name="settings_speed_desc">Speed above which the car is considered to have been driven</string>
+    <string name="settings_time_label">Arming duration</string>
+    <string name="settings_time_desc">Minimum RUN duration before auto-arming (alternative to speed)</string>
+    <string name="settings_delay_label">Closing delay</string>
+    <string name="settings_delay_desc">Delay between door opening and start of window closing</string>
+    <string name="settings_reset">Reset to defaults</string>
+    <string name="fmt_kmh">%1$d km/h</string>
+    <string name="fmt_min">%1$d min</string>
+    <string name="fmt_sec">%1$d s</string>
+
+    <!-- Per-window configuration -->
+    <string name="windows_title">Per-window closing mode</string>
+    <string name="windows_desc">Choose how each window closes during auto-trigger</string>
+    <string name="win_fl">Front left</string>
+    <string name="win_fr">Front right</string>
+    <string name="win_rl">Rear left</string>
+    <string name="win_rr">Rear right</string>
+    <string name="mode_auto">AUTO</string>
+    <string name="mode_pulsed">PULSE</string>
+    <string name="mode_off">OFF</string>
+</resources>

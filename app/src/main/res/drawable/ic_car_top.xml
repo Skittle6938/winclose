@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="150dp"
+    android:viewportWidth="100"
+    android:viewportHeight="150">
+
+    <!-- Carrosserie -->
+    <path
+        android:fillColor="#22223A"
+        android:strokeColor="#555577"
+        android:strokeWidth="2"
+        android:pathData="M20,15 C20,8 30,4 50,4 C70,4 80,8 80,15 L80,135 C80,142 70,146 50,146 C30,146 20,142 20,135 Z" />
+
+    <!-- Pare-brise avant -->
+    <path
+        android:fillColor="#3A3A55"
+        android:strokeColor="#555577"
+        android:strokeWidth="1"
+        android:pathData="M25,18 L75,18 L72,38 L28,38 Z" />
+
+    <!-- Pare-brise arrière -->
+    <path
+        android:fillColor="#3A3A55"
+        android:strokeColor="#555577"
+        android:strokeWidth="1"
+        android:pathData="M28,118 L72,118 L75,135 L25,135 Z" />
+
+    <!-- Trait central séparation portes -->
+    <path
+        android:strokeColor="#555577"
+        android:strokeWidth="1"
+        android:pathData="M50,40 L50,116" />
+
+    <!-- Séparation avant/arrière -->
+    <path
+        android:strokeColor="#555577"
+        android:strokeWidth="1"
+        android:pathData="M22,78 L78,78" />
+
+</vector>
