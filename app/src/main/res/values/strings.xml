@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WinClose</string>
+    <string name="status_vsm_ready">VSM ✓</string>
+    <string name="status_vsm_waiting">VSM…</string>
+
+    <string name="section_auto_close">Auto-fermeture</string>
+    <string name="switch_auto_label">Fermer automatiquement à la sortie du véhicule</string>
+
+    <string name="section_manual">Fermeture manuelle</string>
+    <string name="btn_close_pulsed">⬆ Fermer les vitres</string>
+
+    <string name="settings_language_label">Langue / Language</string>
+
+    <string name="btn_clear_log">Effacer log</string>
+    <string name="log_waiting">En attente…</string>
+
+    <string name="notif_active">WinClose actif</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_lang_fr">🇫🇷 Français</string>
+    <string name="dialog_lang_en">🇬🇧 English</string>
+
+    <string name="info_text"><![CDATA[
+<b><font color="#E94560">WinClose</font></b> — fermeture automatique des vitres pour MG4.<br><br>
+<b>Comment ça marche :</b><br>
+• L’app surveille la vitesse via l’API SAIC<br>
+• Quand vous dépassez la <b>vitesse seuil</b> ou roulez plus que la <b>durée d’armement</b>, le système est <i>armé</i><br>
+• À l’arrivée, quand vous passez en <b>P</b> et ouvrez la <b>porte conducteur</b> :<br>
+&#8194;→ après le <b>délai de fermeture</b>, les 4 vitres se ferment automatiquement<br><br>
+<b>Réglages avancés (⚙) :</b><br>
+• <b>Vitesse seuil</b> : vitesse au-delà de laquelle la voiture est considérée comme ayant roulé. Empêche les déclenchements après un démarrage sans rouler.<br>
+• <b>Durée d’armement</b> : durée minimale en RUN après laquelle le système s’arme automatiquement, même sans avoir dépassé la vitesse seuil.<br>
+• <b>Délai de fermeture</b> : temps entre l’ouverture de la porte conducteur et le début de la fermeture des vitres. Laisse le temps de sortir tranquillement.<br>
+• <b>Mode par vitre</b> : choix pour chacune des 4 vitres entre :<br>
+&#8194;– <b>AUTO</b> : commande de fermeture automatique (si la vitre supporte)<br>
+&#8194;– <b>PULSE</b> : maintien de la commande pendant la durée configurée (ferme toutes les vitres)<br>
+&#8194;– <b>OFF</b> : la vitre n’est pas actionnée<br><br>
+<b>Réglages :</b><br>
+• <b>Auto-fermeture</b> : active/désactive le système<br>
+• Cooldown 60 s entre 2 fermetures<br>
+• Réarmement automatique après chaque cycle dans la même session<br><br>
+<b>Boutons manuels :</b><br>
+• <b>Fermer (AUTO)</b> : commande de fermeture auto si la vitre supporte<br>
+• <b>Fermer (PULSED 5 s)</b> : maintient la commande pendant 5 s, ferme même les vitres totalement baissées<br>
+• <b>Effacer log</b> : vide la console à droite<br><br>
+<b>Notes techniques :</b><br>
+• Communique avec <i>CarVehicleSettingClient</i> et <i>CarStateClient</i> du launcher SAIC<br>
+• Le service tourne en foreground et redémarre au boot
+    ]]></string>
+
+    <!-- Réglages avancés -->
+    <string name="settings_title">Réglages avancés</string>
+    <string name="settings_speed_label">Vitesse seuil</string>
+    <string name="settings_speed_desc">Vitesse à dépasser pour considérer que la voiture a roulé</string>
+    <string name="settings_time_label">Durée d’armement</string>
+    <string name="settings_time_desc">Durée minimale en RUN avant armement automatique (alternative à la vitesse)</string>
+    <string name="settings_delay_label">Délai avant fermeture</string>
+    <string name="settings_delay_desc">Délai entre l’ouverture de la porte et le début de la fermeture</string>
+    <string name="settings_reset">Valeurs par défaut</string>
+    <string name="fmt_kmh">%1$d km/h</string>
+    <string name="fmt_min">%1$d min</string>
+    <string name="fmt_sec">%1$d s</string>
+
+    <!-- Configuration par vitre -->
+    <string name="windows_title">Mode de fermeture par vitre</string>
+    <string name="windows_desc">Choisissez comment chaque vitre se ferme lors du déclenchement automatique</string>
+    <string name="win_fl">Avant gauche</string>
+    <string name="win_fr">Avant droit</string>
+    <string name="win_rl">Arrière gauche</string>
+    <string name="win_rr">Arrière droit</string>
+    <string name="mode_auto">AUTO</string>
+    <string name="mode_pulsed">PULSE</string>
+    <string name="mode_off">OFF</string>
+</resources>
