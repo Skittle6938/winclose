@@ -2,158 +2,415 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:background="#1A1A2E"
-    android:padding="12dp">
+    android:orientation="vertical"
+    android:background="#1A1A2E">
 
-    <!-- Panneau gauche : titre + boutons + toggle -->
+    <!-- ── Top bar ── -->
     <LinearLayout
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingEnd="12dp">
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="8dp"
+        android:background="#0D0D1A">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="4dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/app_name"
-                android:textColor="#E94560"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btn_settings"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:text="⚙"
-                android:textColor="#E94560"
-                android:textSize="24sp"
-                android:padding="0dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:backgroundTint="#0D0D1A"
-                android:layout_marginEnd="6dp" />
-
-            <Button
-                android:id="@+id/btn_info"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:text="ℹ"
-                android:textColor="#E94560"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:padding="0dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:backgroundTint="#0D0D1A" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="12dp" />
-
-        <!-- Auto-fermeture toggle -->
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/section_auto_close"
-            android:textColor="#AAAAAA"
-            android:textSize="11sp"
-            android:textAllCaps="true"
-            android:letterSpacing="0.1"
-            android:layout_marginBottom="6dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/switch_auto_label"
-                android:textColor="#CCCCCC"
-                android:textSize="12sp" />
-
-            <Switch
-                android:id="@+id/switch_auto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#333355"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Fermeture manuelle -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/section_manual"
-            android:textColor="#AAAAAA"
-            android:textSize="11sp"
-            android:textAllCaps="true"
-            android:letterSpacing="0.1"
-            android:layout_marginBottom="6dp" />
+            android:layout_weight="1"
+            android:text="@string/app_name"
+            android:textColor="#E94560"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_close_hold"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="@string/btn_close_pulsed"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            android:backgroundTint="#E94560" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:id="@+id/btn_view_log"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/btn_view_log"
+            android:textColor="#888888"
+            android:textSize="12sp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:minWidth="0dp"
+            android:backgroundTint="#1A1A2E"
+            android:layout_marginEnd="4dp" />
 
         <Button
-            android:id="@+id/btn_clear_log"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:text="@string/btn_clear_log"
-            android:textColor="#666688"
-            android:backgroundTint="#1A1A2E" />
+            android:id="@+id/btn_info"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:text="ℹ"
+            android:textColor="#E94560"
+            android:textSize="22sp"
+            android:padding="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:backgroundTint="#0D0D1A" />
 
     </LinearLayout>
 
-    <!-- Panneau droit : log scrollable -->
-    <ScrollView
-        android:id="@+id/sv_log"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+    <!-- ── Main content: two columns ── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#0D0D1A"
-        android:padding="8dp">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_log"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/log_waiting"
-            android:textColor="#00FF88"
-            android:textSize="11sp"
-            android:fontFamily="monospace"
-            android:lineSpacingMultiplier="1.3" />
+        <!-- ══ LEFT COLUMN : main controls + numeric settings ══ -->
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="14dp">
 
-    </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Auto-close -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section_auto_close"
+                    android:textColor="#AAAAAA"
+                    android:textSize="10sp"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.12"
+                    android:layout_marginBottom="6dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/switch_auto_label"
+                        android:textColor="#CCCCCC"
+                        android:textSize="12sp" />
+
+                    <Switch
+                        android:id="@+id/switch_auto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- Manual close -->
+                <Button
+                    android:id="@+id/btn_close_hold"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="@string/btn_close_pulsed"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:backgroundTint="#E94560"
+                    android:layout_marginBottom="16dp" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#333355" android:layout_marginBottom="14dp" />
+
+                <!-- ── TRIGGER SETTINGS ── -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section_trigger_settings"
+                    android:textColor="#AAAAAA"
+                    android:textSize="10sp"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.12"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- Speed -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="@string/settings_speed_label"
+                        android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/tv_speed_val" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textColor="#00FF88"
+                        android:textSize="13sp" android:fontFamily="monospace" android:textStyle="bold" />
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="@string/settings_speed_desc" android:textColor="#777777"
+                    android:textSize="10sp" android:layout_marginTop="2dp" />
+                <SeekBar android:id="@+id/sb_speed" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp" android:max="40" />
+
+                <!-- Arming time -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="@string/settings_time_label"
+                        android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/tv_time_val" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textColor="#00FF88"
+                        android:textSize="13sp" android:fontFamily="monospace" android:textStyle="bold" />
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="@string/settings_time_desc" android:textColor="#777777"
+                    android:textSize="10sp" android:layout_marginTop="2dp" />
+                <SeekBar android:id="@+id/sb_time" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp" android:max="15" />
+
+                <!-- Delay -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="@string/settings_delay_label"
+                        android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/tv_delay_val" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textColor="#00FF88"
+                        android:textSize="13sp" android:fontFamily="monospace" android:textStyle="bold" />
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="@string/settings_delay_desc" android:textColor="#777777"
+                    android:textSize="10sp" android:layout_marginTop="2dp" />
+                <SeekBar android:id="@+id/sb_delay" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp" android:max="30" />
+
+                <!-- Delay trigger mode -->
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="@string/settings_trigger_label"
+                    android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="@string/settings_trigger_desc"
+                    android:textColor="#777777" android:textSize="10sp"
+                    android:layout_marginTop="2dp" android:layout_marginBottom="6dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginBottom="14dp">
+                    <Button android:id="@+id/btn_trigger_open"
+                        android:layout_width="0dp" android:layout_height="38dp"
+                        android:layout_weight="1" android:text="@string/btn_trigger_door_open"
+                        android:textSize="11sp" android:padding="0dp" android:minWidth="0dp"
+                        android:minHeight="0dp" android:backgroundTint="#333355"
+                        android:layout_marginEnd="6dp" />
+                    <Button android:id="@+id/btn_trigger_close"
+                        android:layout_width="0dp" android:layout_height="38dp"
+                        android:layout_weight="1" android:text="@string/btn_trigger_door_close"
+                        android:textSize="11sp" android:padding="0dp" android:minWidth="0dp"
+                        android:minHeight="0dp" android:backgroundTint="#E94560" />
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#333355" android:layout_marginBottom="14dp" />
+
+                <!-- ── BEEP SETTINGS ── -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section_beep"
+                    android:textColor="#AAAAAA"
+                    android:textSize="10sp"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.12"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical"
+                    android:layout_marginBottom="4dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="@string/settings_beep_label"
+                        android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold" />
+                    <Switch android:id="@+id/switch_beep"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="@string/settings_beep_desc"
+                    android:textColor="#777777" android:textSize="10sp"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Beep volume (shown only when beep enabled) -->
+                <LinearLayout android:id="@+id/layout_beep_volume"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:visibility="gone">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="@string/settings_beep_volume_label"
+                            android:textColor="#FFFFFF" android:textSize="13sp" />
+                        <TextView android:id="@+id/tv_beep_vol_val"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:textColor="#00FF88" android:textSize="13sp"
+                            android:fontFamily="monospace" android:textStyle="bold" />
+                    </LinearLayout>
+                    <SeekBar android:id="@+id/sb_beep_volume"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp" android:layout_marginBottom="8dp"
+                        android:max="100" />
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#333355" android:layout_marginBottom="14dp"
+                    android:layout_marginTop="4dp" />
+
+                <!-- ── LANGUAGE + RESET ── -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_label"
+                    android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginBottom="14dp">
+                    <Button android:id="@+id/btn_lang_fr"
+                        android:layout_width="0dp" android:layout_height="38dp"
+                        android:layout_weight="1" android:text="@string/dialog_lang_fr"
+                        android:textSize="12sp" android:backgroundTint="#E94560"
+                        android:layout_marginEnd="6dp" />
+                    <Button android:id="@+id/btn_lang_en"
+                        android:layout_width="0dp" android:layout_height="38dp"
+                        android:layout_weight="1" android:text="@string/dialog_lang_en"
+                        android:textSize="12sp" android:backgroundTint="#333355"
+                        android:textColor="#AAAAAA" />
+                </LinearLayout>
+
+                <Button android:id="@+id/btn_settings_reset"
+                    android:layout_width="match_parent" android:layout_height="40dp"
+                    android:text="@string/settings_reset"
+                    android:textColor="#AAAAAA" android:textSize="12sp"
+                    android:backgroundTint="#333355" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Divider -->
+        <View android:layout_width="1dp" android:layout_height="match_parent"
+            android:background="#333355" />
+
+        <!-- ══ RIGHT COLUMN : per-window config ══ -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="@string/windows_title"
+                android:textColor="#AAAAAA" android:textSize="10sp"
+                android:textAllCaps="true" android:letterSpacing="0.12"
+                android:layout_marginBottom="4dp" />
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="@string/windows_desc"
+                android:textColor="#777777" android:textSize="10sp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- 2×2 car grid -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView android:id="@+id/iv_car"
+                    android:layout_width="80dp" android:layout_height="120dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_car_top"
+                    android:contentDescription="@null" />
+
+                <!-- FL : top-left -->
+                <LinearLayout android:id="@+id/panel_fl"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true" android:layout_alignParentTop="true"
+                    android:orientation="vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/win_fl" android:textColor="#E0E0E0"
+                        android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="3dp" />
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button android:id="@+id/btn_fl_auto" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_auto" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginEnd="2dp" />
+                        <Button android:id="@+id/btn_fl_pulsed" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_pulsed" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginEnd="2dp" />
+                        <Button android:id="@+id/btn_fl_off" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_off" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- FR : top-right -->
+                <LinearLayout android:id="@+id/panel_fr"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true" android:layout_alignParentTop="true"
+                    android:orientation="vertical" android:gravity="end">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/win_fr" android:textColor="#E0E0E0"
+                        android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="3dp" />
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button android:id="@+id/btn_fr_auto" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_auto" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginEnd="2dp" />
+                        <Button android:id="@+id/btn_fr_pulsed" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_pulsed" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginEnd="2dp" />
+                        <Button android:id="@+id/btn_fr_off" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_off" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- RL : bottom-left -->
+                <LinearLayout android:id="@+id/panel_rl"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true" android:layout_alignParentBottom="true"
+                    android:orientation="vertical">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="3dp">
+                        <Button android:id="@+id/btn_rl_auto" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_auto" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginEnd="2dp" />
+                        <Button android:id="@+id/btn_rl_pulsed" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_pulsed" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginEnd="2dp" />
+                        <Button android:id="@+id/btn_rl_off" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_off" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" />
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/win_rl" android:textColor="#E0E0E0"
+                        android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- RR : bottom-right -->
+                <LinearLayout android:id="@+id/panel_rr"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true" android:layout_alignParentBottom="true"
+                    android:orientation="vertical" android:gravity="end">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="3dp">
+                        <Button android:id="@+id/btn_rr_auto" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_auto" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginEnd="2dp" />
+                        <Button android:id="@+id/btn_rr_pulsed" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_pulsed" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginEnd="2dp" />
+                        <Button android:id="@+id/btn_rr_off" android:layout_width="46dp" android:layout_height="32dp"
+                            android:text="@string/mode_off" android:textSize="9sp"
+                            android:padding="0dp" android:minWidth="0dp" android:minHeight="0dp" />
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/win_rr" android:textColor="#E0E0E0"
+                        android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
