@@ -147,14 +147,8 @@ Automatic window closing application for MG4 electric vehicles running Android A
    - Ensure app has required permissions: WAKE_LOCK, FOREGROUND_SERVICE
    - Monitor Android system logs for permission errors
 
-### High battery drain
-- Adjust arming duration to longer times (system monitors less frequently)
-- Disable auto-close when not needed via main toggle
-- Use manual close button instead of relying on auto-trigger
-
 ### Windows not responding
 - Try different per-window modes (AUTO vs PULSE)
-- Increase closing delay to allow windows more time to respond
 - Some MG4 units may have hardware quirks; PULSE mode is most reliable
 
 ## Development
@@ -170,8 +164,6 @@ Automatic window closing application for MG4 electric vehicles running Android A
 ./gradlew assembleRelease
 ```
 
-### Signing
-The APK is pre-signed with AOSP test platform keys (CN=Android, EMAILADDRESS=android@android.com), which are trusted by default on MG4 fleet units.
 
 ## License
 
