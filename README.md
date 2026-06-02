@@ -4,11 +4,10 @@ Automatic window closing application for MG4 electric vehicles running Android A
 
 ## Features
 
-- 🪟 **Automatic Window Closing** – All 4 windows close automatically when you park and exit the vehicle
-- ⚙️ **Per-Window Configuration** – Choose closing mode for each window independently:
-  - **AUTO**: Automatic close command (if supported by window hardware)
-  - **PULSE**: Holds the command for a configurable duration (closes all windows)
-  - **OFF**: Skip this window
+- 🪟 **Automatic Window Closing** – Windows close automatically when you park and exit the vehicle. Fully configurable: choose a closing mode for each window independently, or disable specific windows entirely to prevent them from ever closing automatically.
+  - **AUTO**: Sends the native automatic close command (requires a window motor with position sensor — typically luxury trim)
+  - **PULSED**: Holds the close command for a configurable duration — works on all trims
+  - **OFF**: Window is excluded from automatic and manual closing; it will never be commanded closed by the app
 - 🎯 **Configurable Triggers**:
   - **Speed Threshold** (5–40 km/h): Minimum speed to "arm" the system
   - **Arming Duration** (1–15 min): Minimum driving time to arm without reaching speed threshold
@@ -30,7 +29,7 @@ Automatic window closing application for MG4 electric vehicles running Android A
 3. **Trigger**: Upon arrival, when you:
    - Shift to **Park (P)**
    - Open the **driver door**
-   - After the configured **closing delay** → all 4 windows close automatically
+   - After the configured **closing delay** → only windows set to **AUTO** or **PULSED** close automatically; windows set to **OFF** are ignored
 
 ### Architecture
 - **WindowHardware**: Core hardware interface using Katman4/Katman5 Binder services and CarStateClient for real-time state
@@ -82,7 +81,7 @@ Automatic window closing application for MG4 electric vehicles running Android A
 - **Arming Duration**: Minimum RUN time for auto-arm (default: 5 minutes)
 - **Closing Delay**: Delay before closing after door opens (default: 5 seconds)
 - **Warning Beep**: Enable/disable an audible beep every second during the closing delay; adjust volume from 0 to 100 %
-- **Per-Window Mode**: Choose AUTO, PULSE, or OFF for each of the 4 windows independently
+- **Per-Window Mode**: Choose AUTO, PULSE, or OFF for each of the 4 windows independently. Windows set to OFF are completely excluded — they will not close automatically or respond to the manual close button
 - **Language**: Toggle between French and English
 - **Reset Button**: Restore all settings to defaults
 
