@@ -45,26 +45,28 @@ Automatic window closing application for MG4 electric vehicles running Android A
 - USB debugging enabled on the head unit (via service menu)
 - AOSP test platform signature trust (standard on MG4 fleet)
 
-### Steps
+### Option A — Direct APK install (recommended)
 
-1. **Download the APK**
-   - Get `winclose-signed.apk` from the [Releases](../../releases) page
+1. Download `winclose-signed.apk` from the [Releases](../../releases) page
+2. Transfer it to the head unit (USB stick, file manager, or any file-transfer app already on the unit)
+3. Open the APK with the built-in file manager to install it
 
-2. **Connect via ADB**
-   ```bash
-   adb connect <MG4_HEAD_UNIT_IP>:5555
-   adb devices  # Verify connection
-   ```
+### Option B — ADB over USB
 
-3. **Install**
+ADB is disabled by default on the MG4 head unit. You need to enable it first using **ADB_util**, a tool developed by Leon Kerman:
+
+> [XDA thread — MG4 Electric AAOS 9 playing (and possibly other MG models)](https://xdaforums.com/t/mg4-electric-aaos-9-playing-and-possibly-other-mg-models.4697712/post-90591053)
+
+Once USB debugging is enabled:
+
+1. Connect a USB cable between your PC and the head unit
+2. Install the APK:
    ```bash
    adb install -f winclose-signed.apk
    ```
-   The `-f` flag is required to allow downgrade/replacement of system apps with test signatures.
+   The `-f` flag is required to replace/upgrade the app when it shares the platform signature.
 
-4. **Launch**
-   - Open the WinClose app from the launcher
-   - Enable "Auto-close" toggle to activate
+3. Launch WinClose from the app launcher and enable the **Auto-close** toggle
 
 ## Usage
 
@@ -126,6 +128,14 @@ Automatic window closing application for MG4 electric vehicles running Android A
 - **Tested**: MG4 AAOS SWI69
 - **Expected Compatible**: MG4 units with standard AOSP test keys
 - **Not Compatible**: Older MG4 models with different vehicle service architecture
+
+## Known Limitations & Tested Without Success
+
+The following approaches were explored but could not be implemented due to hardware or API constraints:
+
+- **Closing windows at vehicle lock** – Triggering on the lock event was attempted, but the windows lose power as soon as the car locks. Any close command sent at or after that moment has no effect; the motors simply do not respond.
+
+- **Triggering on door close instead of door open** – Closing windows once the driver has shut the door behind them (rather than when they first open it) would be a cleaner UX. However, no reliable door-close event was found in the SAIC vehicle APIs available to third-party apps. The current implementation triggers on door open and uses a configurable delay to approximate the same outcome.
 
 ## Troubleshooting
 
