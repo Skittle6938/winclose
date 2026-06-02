@@ -39,6 +39,20 @@ class MainActivity : AppCompatActivity() {
             Thread { WindowHardware.closeAllWindowsPulsed(5000L) }.start()
         }
 
+        // ── Verbose toggle ───────────────────────────────────────────────────────
+        val btnVerbose = findViewById<Button>(R.id.btn_verbose)
+        fun paintVerbose() {
+            val on = WindowHardware.verboseMode
+            btnVerbose.backgroundTintList = ColorStateList.valueOf(if (on) 0xFFE94560.toInt() else 0xFF1A1A2E.toInt())
+            btnVerbose.setTextColor(if (on) 0xFFFFFFFF.toInt() else 0xFF666666.toInt())
+        }
+        paintVerbose()
+        btnVerbose.setOnClickListener {
+            WindowHardware.verboseMode = !WindowHardware.verboseMode
+            paintVerbose()
+            WindowHardware.log(if (WindowHardware.verboseMode) "=== VERBOSE ON ===" else "=== VERBOSE OFF ===")
+        }
+
         // ── Info dialog ──────────────────────────────────────────────────────────
         findViewById<Button>(R.id.btn_info).setOnClickListener { showInfoDialog() }
 
@@ -76,22 +90,6 @@ class MainActivity : AppCompatActivity() {
             tvDelay.text = getString(R.string.fmt_sec, p)
             if (fromUser) Settings.setDelaySec(this, p)
         })
-
-        // ── Delay trigger buttons ─────────────────────────────────────────────────
-        val btnTrigOpen  = findViewById<Button>(R.id.btn_trigger_open)
-        val btnTrigClose = findViewById<Button>(R.id.btn_trigger_close)
-
-        fun paintTriggerButtons(t: DelayTrigger) {
-            val selBg = 0xFFE94560.toInt(); val selFg = 0xFFFFFFFF.toInt()
-            val unsBg = 0xFF333355.toInt(); val unsFg = 0xFFAAAAAA.toInt()
-            btnTrigOpen.backgroundTintList  = ColorStateList.valueOf(if (t == DelayTrigger.DOOR_OPEN)  selBg else unsBg)
-            btnTrigOpen.setTextColor(if (t == DelayTrigger.DOOR_OPEN)  selFg else unsFg)
-            btnTrigClose.backgroundTintList = ColorStateList.valueOf(if (t == DelayTrigger.DOOR_CLOSE) selBg else unsBg)
-            btnTrigClose.setTextColor(if (t == DelayTrigger.DOOR_CLOSE) selFg else unsFg)
-        }
-        paintTriggerButtons(Settings.getDelayTrigger(this))
-        btnTrigOpen.setOnClickListener  { Settings.setDelayTrigger(this, DelayTrigger.DOOR_OPEN);  paintTriggerButtons(DelayTrigger.DOOR_OPEN) }
-        btnTrigClose.setOnClickListener { Settings.setDelayTrigger(this, DelayTrigger.DOOR_CLOSE); paintTriggerButtons(DelayTrigger.DOOR_CLOSE) }
 
         // ── Beep settings ────────────────────────────────────────────────────────
         val switchBeep    = findViewById<Switch>(R.id.switch_beep)
@@ -165,7 +163,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_settings_reset).setOnClickListener {
             Settings.resetDefaults(this)
             applySliderValues(Settings.DEFAULT_SPEED_KMH, Settings.DEFAULT_TIME_MIN, Settings.DEFAULT_DELAY_SEC)
-            paintTriggerButtons(Settings.DEFAULT_DELAY_TRIGGER)
             applyBeepEnabled(Settings.DEFAULT_BEEP_ENABLED)
             applyBeepVolume(Settings.DEFAULT_BEEP_VOLUME)
             winButtons.forEach { paintWindow(it, Settings.DEFAULT_WINDOW_MODE) }

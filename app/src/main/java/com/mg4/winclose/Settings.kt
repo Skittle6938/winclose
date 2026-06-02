@@ -24,7 +24,7 @@ object Settings {
     const val DEFAULT_TIME_MIN      = 5
     const val DEFAULT_DELAY_SEC     = 5
     val   DEFAULT_WINDOW_MODE       = WindowMode.PULSED
-    val   DEFAULT_DELAY_TRIGGER     = DelayTrigger.DOOR_CLOSE
+    val   DEFAULT_DELAY_TRIGGER     = DelayTrigger.DOOR_OPEN
     const val DEFAULT_BEEP_ENABLED  = false
     const val DEFAULT_BEEP_VOLUME   = 50
 

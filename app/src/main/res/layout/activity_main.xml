@@ -38,6 +38,19 @@
             android:layout_marginEnd="4dp" />
 
         <Button
+            android:id="@+id/btn_verbose"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="🔍"
+            android:textSize="18sp"
+            android:padding="0dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:minWidth="0dp"
+            android:backgroundTint="#1A1A2E"
+            android:layout_marginEnd="2dp" />
+
+        <Button
             android:id="@+id/btn_info"
             android:layout_width="44dp"
             android:layout_height="44dp"
@@ -178,29 +191,6 @@
                     android:layout_height="wrap_content" android:layout_marginTop="4dp"
                     android:layout_marginBottom="12dp" android:max="30" />
 
-                <!-- Delay trigger mode -->
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="@string/settings_trigger_label"
-                    android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold" />
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="@string/settings_trigger_desc"
-                    android:textColor="#777777" android:textSize="10sp"
-                    android:layout_marginTop="2dp" android:layout_marginBottom="6dp" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:layout_marginBottom="14dp">
-                    <Button android:id="@+id/btn_trigger_open"
-                        android:layout_width="0dp" android:layout_height="38dp"
-                        android:layout_weight="1" android:text="@string/btn_trigger_door_open"
-                        android:textSize="11sp" android:padding="0dp" android:minWidth="0dp"
-                        android:minHeight="0dp" android:backgroundTint="#333355"
-                        android:layout_marginEnd="6dp" />
-                    <Button android:id="@+id/btn_trigger_close"
-                        android:layout_width="0dp" android:layout_height="38dp"
-                        android:layout_weight="1" android:text="@string/btn_trigger_door_close"
-                        android:textSize="11sp" android:padding="0dp" android:minWidth="0dp"
-                        android:minHeight="0dp" android:backgroundTint="#E94560" />
-                </LinearLayout>
-
                 <View android:layout_width="match_parent" android:layout_height="1dp"
                     android:background="#333355" android:layout_marginBottom="14dp" />
 
@@ -314,9 +304,10 @@
                 android:layout_weight="1">
 
                 <ImageView android:id="@+id/iv_car"
-                    android:layout_width="80dp" android:layout_height="120dp"
+                    android:layout_width="match_parent" android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_car_top"
+                    android:src="@drawable/mg4_top"
+                    android:scaleType="fitCenter"
                     android:contentDescription="@null" />
 
                 <!-- FL : top-left -->

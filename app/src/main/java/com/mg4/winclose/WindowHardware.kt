@@ -5,6 +5,7 @@ import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Binder
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
 import android.os.Parcel
 import android.util.Log
@@ -72,6 +73,12 @@ object WindowHardware {
     private val sMainHandler = Handler(Looper.getMainLooper())
     @Volatile private var sPendingCloseRunnable: Runnable? = null
     @Volatile private var sCloseScheduled = false
+
+    // ── Repeating beep ───────────────────────────────────────────────────────────
+    @Volatile private var sBeepRunnable: Runnable? = null
+
+    // ── Verbose mode — log every raw CarStateClient event ───────────────────────
+    @Volatile var verboseMode = false
 
     val logLines = CopyOnWriteArrayList<String>()
     val ignitionCallbacks     = CopyOnWriteArrayList<(Int) -> Unit>()
@@ -285,15 +292,26 @@ object WindowHardware {
     private fun dispatchIgnition(state: Int) {
         if (state == sLastIgnition) return
         sLastIgnition = state
-        log("ignition=$state driven=$sHasBeenDriving")
+        log("ignition=$state driven=$sHasBeenDriving gear=$sLastGear")
         when (state) {
             CarIgnitionItem.OFF -> {
-                sHasBeenDriving = false
+                // Sur un VE, le conducteur éteint la voiture AVANT d'ouvrir la porte.
+                // Si on est en PARK, on conserve sHasBeenDriving et sDriverDoorOpenedWhileParked
+                // pour que le trigger porte-fermée puisse encore fonctionner après l'extinction.
+                // On ne reset que si on n'est PAS en PARK (état inattendu).
                 sLastTriggerTs = 0L
-                sDriverDoorOpenedWhileParked = false
                 cancelPendingClose("ignition OFF")
+                if (sLastGear != GEAR_PARK) {
+                    sHasBeenDriving = false
+                    sDriverDoorOpenedWhileParked = false
+                }
             }
-            CarIgnitionItem.RUN -> { if (!sHasBeenDriving) armDrivingTimer() }
+            CarIgnitionItem.RUN -> {
+                // Nouveau trajet : on repart de zéro
+                sHasBeenDriving = false
+                sDriverDoorOpenedWhileParked = false
+                armDrivingTimer()
+            }
         }
         val cbs = ignitionCallbacks.toList()
         sMainHandler.post { cbs.forEach { it(state) } }
@@ -357,17 +375,27 @@ object WindowHardware {
             val callbackBinder = object : Binder() {
                 override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
                     try {
+                        data.enforceInterface(CAR_STATE_CALLBACK_DESCRIPTOR)
+                        // En mode verbose : lire et logger TOUS les ints du parcel pour tous les codes
+                        if (verboseMode) {
+                            val pos0 = data.dataPosition()
+                            val vals = mutableListOf<Int>()
+                            repeat(4) { try { vals.add(data.readInt()) } catch (_: Exception) {} }
+                            log("VERBOSE tx=$code vals=${vals.joinToString(",")}")
+                            data.setDataPosition(pos0)   // rebobiner pour la dispatch normale
+                        }
                         when (code) {
-                            TX_SERVICE_READY -> { data.enforceInterface(CAR_STATE_CALLBACK_DESCRIPTOR); log("CarState: onServiceReady") }
-                            TX_GEAR_CHANGE   -> { data.enforceInterface(CAR_STATE_CALLBACK_DESCRIPTOR); dispatchGearChange(data.readInt()) }
-                            TX_PARKING_BRAKE -> { data.enforceInterface(CAR_STATE_CALLBACK_DESCRIPTOR); dispatchParkingBrakeChange(data.readInt()) }
-                            TX_DOOR_SENSOR   -> { data.enforceInterface(CAR_STATE_CALLBACK_DESCRIPTOR); dispatchDoorSensorChange(data.readInt()) }
+                            TX_SERVICE_READY -> log("CarState: onServiceReady")
+                            TX_GEAR_CHANGE   -> dispatchGearChange(data.readInt())
+                            TX_PARKING_BRAKE -> dispatchParkingBrakeChange(data.readInt())
+                            TX_DOOR_SENSOR   -> {
+                                val v = data.readInt()
+                                if (verboseMode) log("VERBOSE door raw=$v last=$sLastDoorSensor")
+                                dispatchDoorSensorChange(v)
+                            }
                             else -> {
-                                try {
-                                    data.enforceInterface(CAR_STATE_CALLBACK_DESCRIPTOR)
-                                    val v = try { data.readInt() } catch (_: Exception) { -999 }
-                                    log("CarState: tx=$code v=$v")
-                                } catch (_: Exception) {}
+                                val v = try { data.readInt() } catch (_: Exception) { -999 }
+                                log("CarState: tx=$code v=$v")
                             }
                         }
                     } catch (_: Exception) {}
@@ -415,13 +443,14 @@ object WindowHardware {
         sCloseScheduled = true
         armDrivingTimer()
 
-        // Bip de prévention
-        playBeepIfEnabled()
+        // Bips répétitifs pendant le compte à rebours (1/s)
+        startRepeatingBeepIfEnabled()
 
         val cbs = parkingStateCallbacks.toList()
         val run = Runnable {
             sPendingCloseRunnable = null
             sCloseScheduled = false
+            stopRepeatingBeep()
             log("→ Fermeture déclenchée")
             cbs.forEach { it() }
         }
@@ -437,20 +466,39 @@ object WindowHardware {
             sCloseScheduled = false
             log("Fermeture annulée ($reason)")
         }
+        stopRepeatingBeep()
     }
 
-    private fun playBeepIfEnabled() {
+    // ── Bip répétitif (1 bip/seconde) pendant le compte à rebours ───────────────
+
+    private fun startRepeatingBeepIfEnabled() {
         val ctx = sAppContext ?: return
         if (!Settings.isBeepEnabled(ctx)) return
+        stopRepeatingBeep()
         val vol = Settings.getBeepVolume(ctx)
-        Thread {
-            try {
-                val tg = ToneGenerator(AudioManager.STREAM_MUSIC, vol)
-                tg.startTone(ToneGenerator.TONE_PROP_BEEP, 600)
-                Thread.sleep(800)
-                tg.release()
-            } catch (_: Exception) {}
-        }.start()
+        lateinit var run: Runnable
+        run = Runnable {
+            if (sBeepRunnable == null) return@Runnable
+            Thread {
+                try {
+                    val am = ctx.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                    @Suppress("DEPRECATION")
+                    am.requestAudioFocus(null, AudioManager.STREAM_NOTIFICATION,
+                        AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+                    val tg = ToneGenerator(AudioManager.STREAM_NOTIFICATION, vol)
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP, 200)
+                    Thread.sleep(300)
+                    tg.release()
+                } catch (_: Exception) {}
+            }.start()
+            sMainHandler.postDelayed(run, 1_000L)
+        }
+        sBeepRunnable = run
+        sMainHandler.post(run)
+    }
+
+    private fun stopRepeatingBeep() {
+        sBeepRunnable?.let { sMainHandler.removeCallbacks(it); sBeepRunnable = null }
     }
 
     private fun dispatchGearChange(gear: Int) {
@@ -480,15 +528,15 @@ object WindowHardware {
 
     private fun dispatchDoorSensorChange(v: Int) {
         if (v == sLastDoorSensor) return
+        val prev = sLastDoorSensor
         sLastDoorSensor = v
 
         if (v == DOOR_OPEN) {
             // ── Porte s'OUVRE ──────────────────────────────────────────────────
+            // Annuler si l'utilisateur revient (porte qui s'ouvre = mouvement humain)
             val cancelMsg = if (sCloseScheduled) " [close pending → ANNULÉ]" else ""
             log("CarState: door→OUVERT$cancelMsg")
-
-            // Tout mouvement de porte pendant le délai = annulation
-            cancelPendingClose("porte ouverte pendant délai")
+            cancelPendingClose("porte ouverte")
 
             // Mémoriser que la porte a été ouverte en mode P (pour trigger DOOR_CLOSE)
             if (sLastGear == GEAR_PARK) sDriverDoorOpenedWhileParked = true
@@ -499,12 +547,12 @@ object WindowHardware {
             }
 
         } else {
-            // ── Porte se FERME ─────────────────────────────────────────────────
-            val cancelMsg = if (sCloseScheduled) " [close pending → ANNULÉ]" else ""
-            log("CarState: door→FERMÉE (v=$v)$cancelMsg")
-
-            // Tout mouvement de porte pendant le délai = annulation
-            cancelPendingClose("porte fermée pendant délai")
+            // ── Porte se FERME / verrouille ────────────────────────────────────
+            // On NE cancel PAS ici : la porte envoie plusieurs valeurs non-nulles
+            // en séquence pendant la fermeture (ex : v=1 ajar, v=2 loquet engagé).
+            // Annuler sur ces transitions tuerait le compte à rebours au verrouillage.
+            // On annule UNIQUEMENT si la porte re-s'ouvre (v=0, branche ci-dessus).
+            log("CarState: door v=$prev→$v${if (sCloseScheduled) " [close en cours]" else ""}")
 
             // Déclencher si mode DOOR_CLOSE et que la porte a été ouverte en mode P
             if (delayTrigger() == DelayTrigger.DOOR_CLOSE
@@ -515,6 +563,32 @@ object WindowHardware {
                 maybeTriggerParkClose("door→CLOSE (conducteur sorti)")
             }
         }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Lecture de position des vitres via sVsm.getVehicleWindowValue(area)
+    // Échelle 0–255 : 0.0 = fermée, 255.0 = complètement ouverte.
+    // Diagnostic (vsm.getVehicleWindowValue(0..3) loggé au démarrage) a confirmé
+    // que cette méthode est disponible directement sur CarVehicleSettingClient.
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Retourne la position de la vitre via getVehicleWindowValue(area).
+     * Échelle 0–255 : 0.0 = fermée, > 0 = ouverte, -1 = indisponible.
+     * La logique dans closeAllWindowsPulsed considère pos ∈ [0,1] comme "déjà fermée",
+     * donc 0.0 → ignorée, tout autre valeur → fermer.
+     */
+    private fun getWindowPosition(area: Int): Float {
+        // getVehicleWindowValue() ne remonte une vraie position que pour les vitres
+        // équipées d'un capteur CAN (typiquement les versions avec fermeture AUTO).
+        // Les vitres en mode PULSED (version standard sans capteur) retournent des
+        // sentinelles fixes — on ne les appelle donc que si le mode est AUTO.
+        val vsm = sVsm ?: return -1f
+        return try {
+            (vsm.javaClass
+                .getMethod("getVehicleWindowValue", Int::class.javaPrimitiveType!!)
+                .invoke(vsm, area) as? Number)?.toFloat() ?: -1f
+        } catch (_: Exception) { -1f }
     }
 
     // ─────────────────────────────────────────────────────────────────────────────
@@ -533,13 +607,29 @@ object WindowHardware {
                 Int::class.javaPrimitiveType, Int::class.javaPrimitiveType)
         } catch (_: Exception) { log("setVehicleWindowStatus introuvable"); return }
 
+        val areaNames = mapOf(
+            Settings.AREA_FL to "FL", Settings.AREA_FR to "FR",
+            Settings.AREA_RL to "RL", Settings.AREA_RR to "RR"
+        )
         val autoAreas   = mutableListOf<Int>()
         val pulsedAreas = mutableListOf<Int>()
         Settings.ALL_AREAS.forEach { area ->
-            when (Settings.getWindowMode(ctx, area)) {
-                WindowMode.AUTO   -> autoAreas.add(area)
-                WindowMode.PULSED -> pulsedAreas.add(area)
-                WindowMode.OFF    -> {}
+            val name = areaNames[area] ?: "A$area"
+            val mode = Settings.getWindowMode(ctx, area)
+            // Lire la position uniquement pour les vitres en mode AUTO :
+            // seules celles-là ont un capteur CAN actif (versions avec fermeture automatique).
+            // Les vitres PULSED (version standard) n'ont pas de capteur → -1f systématique.
+            val pos = if (mode == WindowMode.AUTO) getWindowPosition(area) else -1f
+            val posStr = if (pos < 0f) "pos=?" else "pos=${"%.1f".format(pos)}"
+            // 0.0 = déjà fermée (capteur AUTO) → ignorer ; -1 = pas de capteur → fermer
+            if (pos >= 0f && pos <= 1f) {
+                log("close: $name $posStr → déjà fermée, ignorée")
+                return@forEach
+            }
+            when (mode) {
+                WindowMode.AUTO   -> { log("close: $name $posStr → AUTO");   autoAreas.add(area) }
+                WindowMode.PULSED -> { log("close: $name $posStr → PULSED"); pulsedAreas.add(area) }
+                WindowMode.OFF    ->   log("close: $name $posStr → OFF (désactivée)")
             }
         }
         log("Close: AUTO=$autoAreas  PULSED=$pulsedAreas")
