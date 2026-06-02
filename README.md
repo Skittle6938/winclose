@@ -13,6 +13,7 @@ Automatic window closing application for MG4 electric vehicles running Android A
   - **Speed Threshold** (5–40 km/h): Minimum speed to "arm" the system
   - **Arming Duration** (1–15 min): Minimum driving time to arm without reaching speed threshold
   - **Closing Delay** (0–30 sec): Delay between door opening and window closing
+- 🔔 **Configurable Warning Beep** – Optional audio alert during the closing delay countdown, with adjustable volume (0–100 %)
 - 🌐 **Bilingual UI** – Supports French and English with one-tap language switching
 - 🎮 **Manual Close Button** – Manually close windows with a 5-second pulse
 - 📊 **Real-Time Activity Log** – Monitor system events in real-time
@@ -76,11 +77,12 @@ Automatic window closing application for MG4 electric vehicles running Android A
 - **ℹ Info Button**: View feature documentation
 - **Activity Log**: Real-time events and system status
 
-### Settings Dialog
+### Settings
 - **Speed Threshold**: Minimum speed to arm the system (default: 20 km/h)
 - **Arming Duration**: Minimum RUN time for auto-arm (default: 5 minutes)
 - **Closing Delay**: Delay before closing after door opens (default: 5 seconds)
-- **Per-Window Mode**: Choose AUTO, PULSE, or OFF for each of the 4 windows
+- **Warning Beep**: Enable/disable an audible beep every second during the closing delay; adjust volume from 0 to 100 %
+- **Per-Window Mode**: Choose AUTO, PULSE, or OFF for each of the 4 windows independently
 - **Language**: Toggle between French and English
 - **Reset Button**: Restore all settings to defaults
 
@@ -91,6 +93,7 @@ Automatic window closing application for MG4 electric vehicles running Android A
 | Speed Threshold | 5 | 20 | 40 | km/h |
 | Arming Duration | 1 | 5 | 15 | minutes |
 | Closing Delay | 0 | 5 | 30 | seconds |
+| Beep Volume | 0 | 50 | 100 | % |
 
 ## System Behavior
 
@@ -187,6 +190,25 @@ For issues, questions, or compatibility reports:
 ## Disclaimer
 
 This application interacts with vehicle hardware and services. Use at your own risk. The developer assumes no liability for damage to vehicle electronics, unexpected vehicle behavior, or safety issues. Always verify window operation in normal mode before relying on automatic closing.
+
+## Changelog
+
+### v1.2 — Window position reading & UI refresh
+- **Window position read before closing**: for windows in AUTO mode (luxury versions with position sensor), the current position is logged and already-closed windows are skipped automatically. Windows in PULSED mode (standard versions without sensor) are always commanded closed as a safe fallback.
+- **Removed "door-close" trigger option**: door-close detection is not yet available via the SAIC APIs; the system now uses door-open exclusively.
+- **New car graphic**: replaced the simplified vector silhouette with a real top-down photo of the MG4, displayed full-size behind the 4 window panels.
+
+### v1.1 — Warning beep, redesigned UI
+- **Configurable warning beep**: optional audible beep during the closing delay countdown, volume adjustable from 0 to 100 %.
+- **UI redesign**: all settings are now on the main screen (no separate settings dialog); the activity log is accessible via a dedicated button.
+- **Delay trigger**: added option to trigger the closing delay on door open (default) or door close.
+
+### v1.0 — Initial release
+- Automatic window closing on parking + door open
+- Speed threshold, arming duration and closing delay configurable
+- Per-window mode (AUTO / PULSED / OFF)
+- French / English bilingual UI
+- Real-time activity log
 
 ---
 
