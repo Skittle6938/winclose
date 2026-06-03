@@ -2,6 +2,8 @@
 
 Automatic window closing application for MG4 electric vehicles running Android Automotive OS (AAOS). Seamlessly closes all windows when you exit the vehicle—perfect for parking in unpredictable weather.
 
+![WinClose main screen](screenshots/winclose_screenshot_main_fr.jpg)
+
 ## Features
 
 - 🪟 **Automatic Window Closing** – Windows close automatically when you park and exit the vehicle. Fully configurable: choose a closing mode for each window independently, or disable specific windows entirely to prevent them from ever closing automatically.
