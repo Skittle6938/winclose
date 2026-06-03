@@ -47,8 +47,8 @@ Automatic window closing application for MG4 electric vehicles running Android A
 
 ### Option A — Direct APK install (recommended)
 
-1. Download `winclose-signed.apk` from the [Releases](../../releases) page
-2. Transfer it to the head unit (USB stick, file manager, or any file-transfer app already on the unit)
+1. Download **[winclose-signed.apk](https://github.com/Skittle6938/winclose/releases/latest/download/winclose-signed.apk)**
+2. Copy it to a USB stick and plug it into the head unit's USB port
 3. Open the APK with the built-in file manager to install it
 
 ### Option B — ADB over USB
