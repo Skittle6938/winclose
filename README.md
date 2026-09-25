@@ -234,10 +234,10 @@ This application interacts with vehicle hardware and services. Use at your own r
 
 ### v1.3 — SWI133 support & closing robustness
 - **AUTO windows always close**: a window position of `0.0` (or unreadable) is no longer mistaken for "already closed" — AUTO windows are always commanded closed.
-- **Non-driver AUTO windows close on SWI133**: only the driver window (FL) honours the native `AUTO_UP` command; on SWI133 the other AUTO windows (FR/RL/RR) are closed by a sustained `UP` hold (same mechanism as PULSE), which also guarantees the rear-right window closes.
+- **AUTO windows fall back to PULSE on SWI133**: on SWI133 only the driver window (FL) honours the native `AUTO_UP` command, and the legacy `Katman4`/`CarAdapterService` is disconnected (`sVsm == null`). When that happens, **all** AUTO windows — FL included — are additionally driven with the sustained `UP` hold (same mechanism as PULSE) to guarantee they physically close (`Close: fallback PULSED (Katman4 null) → vitres AUTO maintenues UP`). On legacy firmware with Katman4 connected, only the native `AUTO_UP` command is sent.
 - **Gear-signal debounce**: SWI133 gear noise after shutdown (`NEUTRAL`/`UNKNOWN`, transient `REVERSE` blips) no longer cancels the closing countdown or drops PARK; only sustained readings are acted on.
 - **Countdown skipped when everything is already closed**: before the timer and beep the 4 window positions are read; the countdown runs only if at least one window is open (or its state is unreliable).
-- **Countdown cancelled on driver action**: immediately cancelled if the driver presses the brake / restarts the car, operates a physical window button, or re-opens the door (door closing does not cancel).
+- **Countdown cancelled on driver action**: immediately cancelled if the driver starts the car / presses the brake (`ignition=3`, CRANK — there is no dedicated brake-pedal signal), moves the gear out of PARK, operates a physical window button (window position change), or re-opens the door (door closing does not cancel).
 - **Countdown only when enabled**: the countdown and beep do not run when the main Auto-close toggle is off.
 
 ### v1.2 — Window position reading & UI refresh

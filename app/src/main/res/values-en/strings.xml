@@ -33,9 +33,8 @@
 • Upon arrival, when you shift to <b>P</b> and operate the <b>driver door</b>:<br>
   → after the <b>closing delay</b>, all 4 windows close automatically<br><br>
 <b>Delay trigger mode:</b><br>
-• <b>Door CLOSES</b> (default): countdown starts when you close the door behind you after getting out<br>
-• <b>Door OPENS</b>: countdown starts as soon as the driver door opens<br>
-• <b>Auto-cancel</b>: any door movement during the delay cancels the close (e.g. you forgot something and come back)<br><br>
+• The countdown starts as soon as the <b>driver door opens</b> (default mode)<br>
+• <b>Auto-cancel</b>: the countdown is cancelled if you <b>re-open</b> the door, shift out of <b>P</b>, start the car / press the <b>brake</b>, or operate a <b>window button</b>. Closing the door does <b>not</b> cancel (normal flow: open → get out → close → close windows)<br><br>
 <b>Warning beep:</b><br>
 • A beep sounds at the start of the delay to warn you that windows are about to close<br>
 • Disabled by default — enable in settings<br>
@@ -49,7 +48,7 @@
 • 60 s cooldown between two closes<br>
 • Auto-rearm after each cycle<br>
 • Foreground service — restarts at boot<br>
-• Talks to <i>CarVehicleSettingClient</i> and <i>CarStateClient</i> from the SAIC launcher
+• Talks to the SAIC services: carapi <i>CarVehicleSettingClient</i>/<i>CarStateClient</i> (legacy firmware) or <i>VehicleService</i> (SWI133+)
     ]]></string>
 
     <!-- Advanced settings -->
