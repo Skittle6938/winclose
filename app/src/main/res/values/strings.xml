@@ -33,9 +33,8 @@
 • À l\'arrivée, quand vous passez en <b>P</b> et actionnez la <b>porte conducteur</b> :<br>
   → après le <b>délai de fermeture</b>, les 4 vitres se ferment automatiquement<br><br>
 <b>Déclenchement du délai :</b><br>
-• <b>Porte FERME</b> (défaut) : le délai commence quand vous refermez la porte derrière vous après être sorti<br>
-• <b>Porte OUVRE</b> : le délai commence dès l\'ouverture de la porte conducteur<br>
-• <b>Annulation automatique</b> : tout mouvement de porte pendant le délai annule la fermeture (ex : vous revenez chercher quelque chose)<br><br>
+• Le délai démarre dès l\'ouverture de la <b>porte conducteur</b> (mode par défaut)<br>
+• <b>Annulation automatique</b> : le délai est annulé si vous <b>rouvrez</b> la porte, quittez la position <b>P</b>, démarrez la voiture / appuyez sur le <b>frein</b>, ou actionnez un <b>bouton de vitre</b>. Refermer la porte n\'annule <b>pas</b> (déroulement normal : ouvrir → sortir → refermer → fermeture)<br><br>
 <b>Bip d\'avertissement :</b><br>
 • Un bip sonore retentit au début du délai pour vous prévenir que les vitres vont se fermer<br>
 • Désactivé par défaut — à activer dans les réglages<br>
@@ -49,7 +48,7 @@
 • Cooldown 60 s entre 2 fermetures<br>
 • Réarmement automatique après chaque cycle<br>
 • Service foreground — redémarre au boot<br>
-• Communique avec <i>CarVehicleSettingClient</i> et <i>CarStateClient</i> du launcher SAIC
+• Communique avec les services SAIC : carapi <i>CarVehicleSettingClient</i>/<i>CarStateClient</i> (firmware legacy) ou <i>VehicleService</i> (SWI133+)
     ]]></string>
 
     <!-- Réglages -->
