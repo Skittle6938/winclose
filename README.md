@@ -127,9 +127,23 @@ Once USB debugging is enabled:
 
 ## Compatibility
 
-- **Tested**: MG4 AAOS SWI69
-- **Expected Compatible**: MG4 units with standard AOSP test keys
-- **Not Compatible**: Older MG4 models with different vehicle service architecture
+The SAIC vehicle services are located in a different package depending on the firmware. WinClose resolves the package dynamically at runtime (candidate list + `com.saicmotor.*` scan + system classloader fallback), and has two backends:
+
+- **Legacy carapi** (`com.saicmotor.carapi.CarAdapterClient` → `CarVehicleSettingClient` for windows, `CarStateClient`/`CarGeneralClient` for sensors), used by SWI69 / SWI131 / SWI132 / SWI173.
+- **SWI133+ vehicle service** (`com.saicmotor.service.vehicle.VehicleService` → `IVehicleControlService` for windows, `IVehicleConditionService` for gear/speed/ignition, `IVehiclePropertyService` for the door), used by SWI133 / SWI68 R71. On these firmwares the `CarAdapterClient` bundled in `com.saicmotor.voiceservice` still binds to the removed `com.saicmotor.caradapter` package, so it is ignored and the new backend is used instead.
+
+| Firmware | Backend | Status |
+|---|---|---|
+| SWI69 | Legacy carapi (`com.saicmotor.launcher`) | ✅ Tested (original release) |
+| SWI131 R27 | Legacy carapi (`com.saicmotor.launcher`) | ✅ Verified via firmware analysis |
+| SWI132 R43 | Legacy carapi (`com.saicmotor.launcher`) | ✅ Verified via firmware analysis |
+| SWI133 R36/R43 | SWI133+ (`com.saicmotor.service.vehicle`) | ✅ Fixed (windows + sensors) |
+| SWI173 R08 | Legacy carapi (`com.saicmotor.launcher`) | ✅ Verified via firmware analysis |
+| SWI68 R71 (Trophy) | SWI133+ (`com.saicmotor.service.vehicle`) | ✅ Fixed (windows + sensors) |
+| SWI68 R46 | `com.saicmotor.onlinemedia` | ⚠️ Binds, but window API is missing |
+
+- **Not Compatible**: SWI68 R46 — the carapi classes moved to `com.saicmotor.onlinemedia`, and the window-control API (`setVehicleWindowStatus`/`getVehicleWindowValue`) is no longer present, so window closing is not supported on this firmware.
+- All units require standard AOSP test keys.
 
 ## Known Limitations & Tested Without Success
 
@@ -138,6 +152,8 @@ The following approaches were explored but could not be implemented due to hardw
 - **Closing windows at vehicle lock** – Triggering on the lock event was attempted, but the windows lose power as soon as the car locks. Any close command sent at or after that moment has no effect; the motors simply do not respond.
 
 - **Triggering on door close instead of door open** – Closing windows once the driver has shut the door behind them (rather than when they first open it) would be a cleaner UX. However, no reliable door-close event was found in the SAIC vehicle APIs available to third-party apps. The current implementation triggers on door open and uses a configurable delay to approximate the same outcome.
+
+- **"Skip already-closed windows" can't be trusted across firmwares** – The position read that lets the app avoid commanding a motor that is already closed (`getVehicleWindowValue` on the legacy carapi, `getXxxWindow` on the SWI133 backend) is a *firmware-service* feature, not a hardware one. With identical window hardware, different SWI releases move the API to another package (`com.saicmotor.launcher` → `com.saicmotor.voiceservice` → `com.saicmotor.onlinemedia`), remove it entirely (SWI68 R46), or return a fixed `0.0` for open windows that have no position sensor (SWI133 — only the driver window reports a real value). When the read is unavailable (`-1`) or a sentinel (`0.0`), the app can't tell "closed" from "open without sensor", so it commands the close anyway instead of risking leaving a window open. The current code therefore only skips the countdown when all 4 positions are *reliably* confirmed closed.
 
 ## Troubleshooting
 
@@ -164,6 +180,18 @@ The following approaches were explored but could not be implemented due to hardw
 ### Windows not responding
 - Try different per-window modes (AUTO vs PULSE)
 - Some MG4 units may have hardware quirks; PULSE mode is most reliable
+
+### Verifying SWI133+ sensor values (field test)
+On SWI133 / SWI68 R71 the gear/door/ignition/speed values are read from `com.saicmotor.service.vehicle.VehicleService` (not the legacy carapi). To confirm the mappings on a real car:
+
+1. Enable the **verbose** toggle (top-left button) and open the **activity log**.
+2. Drive, shift gear, and open/close the driver door. Watch for these lines:
+   - `VERBOSE SWI133 gear raw=N (PARK|REVERSE|DRIVE|NEUTRAL|UNKNOWN)` → the value that means Park (expected `4`). While parked, `NEUTRAL (1)`/`UNKNOWN (0)` are noise from the powered-down TCU and are ignored by the trigger logic.
+   - `VERBOSE SWI133 door raw=N` → `0` = closed, `1`/`2`/`3` = open/ajar (expected).
+   - `VERBOSE SWI133 ignition raw=N` → `0`=OFF, `1`=ACC, `2`=RUN, `3`=CRANK.
+   - `VERBOSE SWI133 speed raw=... km/h`.
+   - `Swi133: control=true condition=true property=true` → the backend is bound.
+3. If the raw values differ from the expectations above, the mapping constants in `WindowHardware.kt` (`GEAR_PARK_AOSP`, door encoding) need adjusting.
 
 ## Development
 
@@ -203,6 +231,14 @@ For issues, questions, or compatibility reports:
 This application interacts with vehicle hardware and services. Use at your own risk. The developer assumes no liability for damage to vehicle electronics, unexpected vehicle behavior, or safety issues. Always verify window operation in normal mode before relying on automatic closing.
 
 ## Changelog
+
+### v1.3 — SWI133 support & closing robustness
+- **AUTO windows always close**: a window position of `0.0` (or unreadable) is no longer mistaken for "already closed" — AUTO windows are always commanded closed.
+- **AUTO windows fall back to PULSE on SWI133**: on SWI133 only the driver window (FL) honours the native `AUTO_UP` command, and the legacy `Katman4`/`CarAdapterService` is disconnected (`sVsm == null`). When that happens, **all** AUTO windows — FL included — are additionally driven with the sustained `UP` hold (same mechanism as PULSE) to guarantee they physically close (`Close: fallback PULSED (Katman4 null) → vitres AUTO maintenues UP`). On legacy firmware with Katman4 connected, only the native `AUTO_UP` command is sent.
+- **Gear-signal debounce**: SWI133 gear noise after shutdown (`NEUTRAL`/`UNKNOWN`, transient `REVERSE` blips) no longer cancels the closing countdown or drops PARK; only sustained readings are acted on.
+- **Countdown skipped when everything is already closed**: before the timer and beep the 4 window positions are read; the countdown runs only if at least one window is open (or its state is unreliable).
+- **Countdown cancelled on driver action**: immediately cancelled if the driver starts the car / presses the brake (`ignition=3`, CRANK — there is no dedicated brake-pedal signal), moves the gear out of PARK, operates a physical window button (window position change), or re-opens the door (door closing does not cancel).
+- **Countdown only when enabled**: the countdown and beep do not run when the main Auto-close toggle is off.
 
 ### v1.2 — Window position reading & UI refresh
 - **Window position read before closing**: for windows in AUTO mode (luxury versions with position sensor), the current position is logged and already-closed windows are skipped automatically. Windows in PULSED mode (standard versions without sensor) are always commanded closed as a safe fallback.
